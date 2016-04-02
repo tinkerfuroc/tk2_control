@@ -4,26 +4,34 @@
 #include <string>
 #include <XmlRpc.h>
 #include <sys/types.h>
-#include "tk_hardware_interface/SwitchGPIO.h"
 #include "tk_hardware_interface/motor_controller.h"
+#include "tk_hardware_interface/switch_gpio.h"
+#include "tk_hardware_interface/interpolate.h"
 
 namespace tinker {
 namespace control {
 
 class PWMMotorController : public MotorController {
 public:
-    PWMMotorController(const XmlRpc::XmlRpcValue& pulse_motor_struct);
+    PWMMotorController(XmlRpc::XmlRpcValue& pwm_motor_info);
     virtual bool CheckStartLegal();
     virtual double Get();
     virtual void Set(double val);
     virtual ~PWMMotorController();
+private: 
+    void Set_(double val);
 
-private:
+    std::string name_;
     int dev_fd_;
-    int origin_count_;
-    double to_meter_fraction_;
     SwitchGPIOPtr legal_checker_;
-    unsigned motor_regs_[2];
+    LinearInterpolation interpolation_;
+    double now_angle_;
+    bool can_move_;
+    unsigned * motor_regs_;
+    static const unsigned kFREQ = 100000000;
+    static const int kRATE = 50;
+    static const int kCYCLE = 0;
+    static const int kWIDTH = 1;
 };
 }
 }

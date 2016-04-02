@@ -21,7 +21,7 @@ public:
 private:
     hardware_interface::JointStateInterface jnt_state_interface_;
     hardware_interface::PositionJointInterface jnt_pos_interface_;
-    std::vector<MotorController> motors;
+    std::vector<MotorPtr> motors;
     double cmd_[7];
     double pos_[7];
     double vel_[7];

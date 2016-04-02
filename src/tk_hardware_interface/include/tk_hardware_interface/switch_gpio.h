@@ -13,7 +13,7 @@ namespace control {
 class SwitchGPIO {
 public:
     SwitchGPIO(const std::string & gpio_file_name);
-    bool get();
+    bool Get();
     ~SwitchGPIO();
 private:
     int gpio_fd_;

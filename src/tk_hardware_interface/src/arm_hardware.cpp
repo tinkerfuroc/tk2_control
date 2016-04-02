@@ -17,9 +17,9 @@ ArmHardware::ArmHardware(XmlRpcValue& arm_info) {
         hardware_interface::JointStateHandle state_handle(
             it->first, &pos_[i], &vel_[i], &eff_[i]);
         jnt_state_interface_.registerHandle(state_handle);
-        hardware_interface::JointHandle pos_handle_a(
-            jnt_state_interface_.getHandle(it->first), &cmd_[0]);
-        jnt_pos_interface_.registerHandle(pos_handle_a);
+        hardware_interface::JointHandle pos_handle(
+            jnt_state_interface_.getHandle(it->first), &cmd_[i]);
+        jnt_pos_interface_.registerHandle(pos_handle);
         i++;
     }
     registerInterface(&jnt_state_interface_);

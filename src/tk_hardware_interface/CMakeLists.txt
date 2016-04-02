@@ -131,7 +131,12 @@ include_directories(
 # add_dependencies(tk_hardware_interface ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 set(SRC_FILE 
-    src/arm_hardware.cpp
+    ./src/arm_hardware.cpp
+    ./src/dynamixel_motor_controller.cpp
+    ./src/pwm_motor_controller.cpp
+    ./src/pulse_motor_controller.cpp
+    ./src/interpolate.cpp
+    ./src/switch_gpio.cpp
 )
 
 ## Declare a C++ executable
