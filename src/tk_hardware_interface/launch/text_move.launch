@@ -1,0 +1,8 @@
+<launch>
+    <rosparam command="load" file="$(find tk_hardware_interface)/param/controller.yaml"/>
+    <node name="tk_arm_hardware_node" pkg="tk_hardware_interface" type="tk_arm_hardware_node" respawn="false" output="screen">
+        <rosparam command="load" file="$(find tk_hardware_interface)/param/arm.yaml"/>
+    </node>
+    <node name="control_spawn" pkg="controller_manager" type="spawner" output="screen"
+          args="arm_joint_state_controller arm_joint_position_controller" />
+</launch>

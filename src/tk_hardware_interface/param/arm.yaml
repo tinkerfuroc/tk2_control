@@ -1,0 +1,22 @@
+arm_info:
+  base:
+    name: base
+
+  turn_joint:
+    name: turn_joint
+
+  shoulder_joint:
+    name: shoulder_joint
+
+  elbow_joint:
+    name: elbow_joint
+
+  hand_roll_joint:
+    name: hand_roll_joint
+
+  hand_pitch_joint:
+    name: hand_pitch_joint
+
+  hand_grab_joint:
+    name: hane_grab_joint
+

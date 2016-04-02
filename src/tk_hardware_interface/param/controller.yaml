@@ -1,0 +1,11 @@
+arm_joint_state_controller:
+  type: 'joint_state_controller/JointStateController'
+  joints:
+    - base
+  publish_rate: 10.0
+
+arm_joint_position_controller:
+  type: 'position_controllers/JointGroupPositionController'
+  joints:
+    - base
+

@@ -15,7 +15,10 @@ int main(int argc, char *argv[]) {
     ros::Rate r(10);
     ros::Time last_time, now_time;
     last_time = ros::Time::now();
-    while(true) {
+    ros::AsyncSpinner spinner(4);
+    spinner.start();
+    ROS_DEBUG("working...");
+    while(ros::ok()) { 
         arm.Read();
         now_time = ros::Time::now();
         cm.update(ros::Time::now(), now_time-last_time);
