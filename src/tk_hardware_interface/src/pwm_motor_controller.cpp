@@ -18,7 +18,7 @@ using std::vector;
 
 PWMMotorController::PWMMotorController(
     XmlRpc::XmlRpcValue &pwm_motor_info)
-    : motor_regs_(NULL), now_angle_(0){
+    : motor_regs_(NULL), now_angle_(0), commanded_(false){
     ROS_ASSERT(pwm_motor_info.getType() == XmlRpc::XmlRpcValue::TypeStruct);
     ROS_ASSERT(pwm_motor_info.hasMember("name"));
     ROS_ASSERT(pwm_motor_info.hasMember("dev_filename"));
@@ -59,6 +59,8 @@ PWMMotorController::PWMMotorController(
     XmlRpc::XmlRpcValue duty_rates = pwm_motor_info["duty_rates"];
     ROS_ASSERT(angles.getType() == XmlRpc::XmlRpcValue::TypeArray);
     ROS_ASSERT(duty_rates.getType() == XmlRpc::XmlRpcValue::TypeArray);
+    ROS_INFO("angles size %d", angles.size());
+    ROS_INFO("duty_rates size %d", duty_rates.size());
     ROS_ASSERT(angles.size() == duty_rates.size());
     vector<double> angles_vec, duty_rates_vec;
     for (int i = 0; i < angles.size(); i++) {
@@ -72,7 +74,10 @@ PWMMotorController::PWMMotorController(
     // Setup
     if (!can_move_) ROS_WARN("Motor %s not at initial position", name_.c_str());
     motor_regs_[kCYCLE] = kFREQ / kRATE;
-    Set_((double)pwm_motor_info["start_angle"]);
+    double start_angle = pwm_motor_info["start_angle"];
+    Set_(start_angle);
+    now_angle_ = start_angle;
+    commanded_ = false;
 }
 
 bool PWMMotorController::CheckStartLegal() {
@@ -93,9 +98,14 @@ void PWMMotorController::Set(double val) {
 
 void PWMMotorController::Set_(double val) {
     if (can_move_ || CheckStartLegal()) {
+        if (val == now_angle_) return;
+        if (!commanded_ && val == 0) return;
+        commanded_ = true;
         double duty_rate = interpolation_.Get(val);
         unsigned duty_width = (kFREQ / kRATE) * duty_rate;
+        ROS_DEBUG("Write duty_rate %f", duty_rate);
         motor_regs_[kWIDTH] = duty_width;
+        now_angle_ = val;
     }
 }
 

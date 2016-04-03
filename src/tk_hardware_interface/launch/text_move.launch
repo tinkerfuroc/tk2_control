@@ -4,5 +4,5 @@
         <rosparam command="load" file="$(find tk_hardware_interface)/param/arm.yaml"/>
     </node>
     <node name="control_spawn" pkg="controller_manager" type="spawner" output="screen"
-          args="arm_joint_state_controller arm_joint_position_controller" />
+          args="arm_joint_state_controller base_joint_position_controller shoulder_joint_position_controller elbow_joint_position_controller" />
 </launch>

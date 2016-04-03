@@ -28,6 +28,7 @@ private:
     double now_angle_;
     bool can_move_;
     unsigned * motor_regs_;
+    bool commanded_;
     static const unsigned kFREQ = 100000000;
     static const int kRATE = 50;
     static const int kCYCLE = 0;

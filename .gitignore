@@ -20,4 +20,6 @@ tags
 deletesim.txt
 *.pyc
 .ycm_extra_conf.py
+src/CMakelists.txt
+src/CMakeLists.txt
 

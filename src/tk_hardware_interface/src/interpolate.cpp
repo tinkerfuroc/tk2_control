@@ -28,7 +28,7 @@ double LinearInterpolation::Get(double x) {
     double y_lo = ys_[lo];
     double y_hi = ys_[hi];
     double weight_lo = (x_hi - x) / (x_hi - x_lo);
-    double weight_hi = (x_lo - x) / (x_hi - x_lo);
+    double weight_hi = (x - x_lo) / (x_hi - x_lo);
     return weight_lo * y_lo + weight_hi * y_hi;
 }
 

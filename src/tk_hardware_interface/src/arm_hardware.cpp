@@ -2,6 +2,7 @@
 #include <ros/ros.h>
 #include <assert.h>
 #include <map>
+#include <cstdio>
 
 using std::string;
 using std::pair;
@@ -28,7 +29,6 @@ ArmHardware::ArmHardware(XmlRpcValue& arm_info) {
         }
         motors.push_back(motor);
 
-
         hardware_interface::JointStateHandle state_handle(it->first, &pos_[i],
                                                           &vel_[i], &eff_[i]);
         jnt_state_interface_.registerHandle(state_handle);
@@ -40,7 +40,7 @@ ArmHardware::ArmHardware(XmlRpcValue& arm_info) {
     }
     registerInterface(&jnt_state_interface_);
     registerInterface(&jnt_pos_interface_);
-}
+    }
 
 void ArmHardware::Read() {
     for (int i = 0; i < cmd_.size(); i++) 

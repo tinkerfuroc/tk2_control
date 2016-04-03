@@ -24,6 +24,7 @@ bool SwitchGPIO::Get() {
     if (read(gpio_fd_, &c, 1) != 1) {
         ROS_ERROR("failed to read gpio file");
     }
+    c = c & 0x01;
     lseek(gpio_fd_, 0, SEEK_SET);
     return c;
 }

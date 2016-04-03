@@ -54,10 +54,11 @@ PulseMotorController::PulseMotorController(
     // Setup
     to_meter_fraction_ = pulse_motor_info["to_meter_fraction"];
     if (!can_move_) ROS_WARN("Motor %s not at initial position", name_.c_str());
-    speed_ = (unsigned)((double)pulse_motor_info["speed"] * to_meter_fraction_);
+    speed_ = (unsigned)((int)pulse_motor_info["speed"]);
     motor_regs_[kCTRL] = CTRL_DIR & ~CTRL_ENABLE;
     motor_regs_[kVEL] = speed_;
     start_count_ = motor_regs_[kFEEDBACK];
+    ROS_INFO("Pulse motor %s starts with count %u", name_.c_str(), start_count_);
 }
 
 bool PulseMotorController::CheckStartLegal() {
@@ -69,19 +70,27 @@ bool PulseMotorController::CheckStartLegal() {
 }
 
 double PulseMotorController::Get() {
-    return (motor_regs_[kFEEDBACK] - start_count_) / to_meter_fraction_;
+    return - ((int)(motor_regs_[kFEEDBACK] - start_count_)) / to_meter_fraction_;
 }
 
 void PulseMotorController::Set(double val) {
     if (val == last_target_) return;
     if (can_move_ || CheckStartLegal()) {
         double now_height = Get();
-        if (now_height > 0)
-            motor_regs_[kCTRL] |= CTRL_DIR;
-        else
+        double move_height = val - now_height;
+        if (move_height > 0)
             motor_regs_[kCTRL] &= ~CTRL_DIR;
-        motor_regs_[kCOUNT] =
-            (unsigned)(fabs(val - now_height) * to_meter_fraction_);
+        else {
+            motor_regs_[kCTRL] |= CTRL_DIR;
+            move_height = -move_height;
+        }
+        ROS_DEBUG("move height %f", move_height);
+        unsigned move_pulses =
+            (unsigned)(move_height * to_meter_fraction_);
+        //For whatever reason, the hardware IP requires me to do so
+        move_pulses *= 2;
+        ROS_DEBUG("Pulse motor %s move pulses %u", name_.c_str(), move_pulses);
+        motor_regs_[kCOUNT] = move_pulses;
         last_target_ = val;
     }
 }
