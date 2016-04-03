@@ -132,11 +132,12 @@ include_directories(
 
 set(SRC_FILE 
     ./src/arm_hardware.cpp
-    ./src/dynamixel_motor_controller.cpp
+    #./src/dynamixel_motor_controller.cpp
     ./src/pwm_motor_controller.cpp
     ./src/pulse_motor_controller.cpp
     ./src/interpolate.cpp
     ./src/switch_gpio.cpp
+    ./src/motor_controller.cpp
 )
 
 ## Declare a C++ executable

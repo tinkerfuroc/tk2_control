@@ -16,7 +16,7 @@ using std::string;
 
 PulseMotorController::PulseMotorController(
     XmlRpc::XmlRpcValue &pulse_motor_info)
-    : motor_regs_(NULL), start_count_(0) {
+    : motor_regs_(NULL), start_count_(0), last_target_(0) {
     ROS_ASSERT(pulse_motor_info.getType() == XmlRpc::XmlRpcValue::TypeStruct);
     ROS_ASSERT(pulse_motor_info.hasMember("name"));
     ROS_ASSERT(pulse_motor_info.hasMember("dev_filename"));
@@ -73,6 +73,7 @@ double PulseMotorController::Get() {
 }
 
 void PulseMotorController::Set(double val) {
+    if (val == last_target_) return;
     if (can_move_ || CheckStartLegal()) {
         double now_height = Get();
         if (now_height > 0)
@@ -81,6 +82,7 @@ void PulseMotorController::Set(double val) {
             motor_regs_[kCTRL] &= ~CTRL_DIR;
         motor_regs_[kCOUNT] =
             (unsigned)(fabs(val - now_height) * to_meter_fraction_);
+        last_target_ = val;
     }
 }
 

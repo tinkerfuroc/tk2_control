@@ -13,12 +13,12 @@ public:
     virtual double Get() = 0;
     virtual void Set(double val) = 0;
     virtual ~MotorController() {}
+    static boost::shared_ptr<MotorController> GetController(
+        const std::string &class_name, XmlRpc::XmlRpcValue &motor_info);
 };
 
 typedef boost::shared_ptr<MotorController> MotorPtr;
-
 }
 }
-
 
 #endif

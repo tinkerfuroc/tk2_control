@@ -25,7 +25,8 @@ private:
     unsigned * motor_regs_;
     unsigned speed_;
     bool can_move_;
-    unsigned start_count_;
+    unsigned start_count_; 
+    double last_target_;
     static const int kVEL = 0;
     static const int kCOUNT = 1;
     static const int kCTRL = 2;

@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
         arm.Read();
         now_time = ros::Time::now();
         cm.update(ros::Time::now(), now_time-last_time);
+        arm.Write();
         last_time = now_time;
         r.sleep();
     }
