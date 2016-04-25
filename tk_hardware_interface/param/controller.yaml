@@ -14,7 +14,11 @@ elbow_joint_position_controller:
   type: 'position_controllers/JointPositionController'
   joint: elbow_joint 
 
-shoulder_joint_position_controller:
+shoulder_rotation_joint_position_controller:
   type: 'position_controllers/JointPositionController'
-  joint: shoulder_joint
+  joint: shoulder_rotation_joint
+
+shoulder_flexion_joint_position_controller:
+  type: 'position_controllers/JointPositionController'
+  joint: shoulder_flexion_joint
  

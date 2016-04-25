@@ -10,6 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
   hardware_interface
   pluginlib
   roscpp
+  actionlib_msgs
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -60,17 +62,16 @@ find_package(Boost REQUIRED)
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+  FILES
+  SimpleMove.action
+)
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs geometry_msgs actionlib_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -105,7 +106,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES tk_hardware_interface
 #  CATKIN_DEPENDS controller_interface hardware_interface pluginlib roscpp
-#  DEPENDS system_lib
+  DEPENDS system_lib actionlib_msgs
 )
 
 ###########

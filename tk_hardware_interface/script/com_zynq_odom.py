@@ -12,10 +12,11 @@ from numpy.linalg import lstsq, norm
 from constants_odom import *
 from math import cos, sin, fabs
 from chassis import Chassis
-from roboarm import JointInfo
 
 import actionlib
-from tk_hardware_interface.msg import SimpleMoveFeedBack, SimpleMoveResult, SimpleMoveAction
+from tk_hardware_interface.msg._SimpleMoveFeedback import SimpleMoveFeedback
+from tk_hardware_interface.msg._SimpleMoveResult import SimpleMoveResult
+from tk_hardware_interface.msg._SimpleMoveAction import SimpleMoveAction
 
 
 class ChassisControlNode:
@@ -31,7 +32,7 @@ class ChassisControlNode:
         self.now_y = 0
         self.now_theta = 0
         self.in_action_service = False
-        self._simple_move_feedback = SimpleMoveFeedBack()
+        self._simple_move_feedback = SimpleMoveFeedback()
         self._simple_move_result = SimpleMoveResult()
         self._as = actionlib.SimpleActionServer("simple_move", SimpleMoveAction, execute_cb = self.execut_cb, auto_start = False)
         self._as.start()
@@ -101,14 +102,15 @@ class ChassisControlNode:
 
     def vel_callback(self, vel):
         if abs(vel.linear.x) > MAX_VELOCITY or abs(vel.linear.y) > MAX_VELOCITY or abs(vel.angular.z) > MAX_A_VELOCITY:
-            rospy.logerr('vel too big!')
+            rospy.logwarn('vel too big!')
             return
         vel = array([vel.linear.x, vel.linear.y, vel.angular.z])
+        self.is_stopped = False
         with self.lock:
             self.target_wheel_speed = MACANUM_MAT.dot(vel.T) * PV_RATE
 
 
-    def run():
+    def run(self):
         rate = rospy.Rate(RATE)
         while not rospy.is_shutdown():
             with self.lock:
@@ -134,24 +136,20 @@ class ChassisControlNode:
                 self.chassis.set_wheels_speed(self.now_wheel_speed)
                 self.chassis.set_wheels_count([10000] * 4)
 
-
-    def delta_move_to_xytheta(self, delta_moves):
-
-
     def feedback(self):
         new_moves = self.chassis.get_feedback()
         delta_moves = array(new_moves) - array(self.last_moves)
         self.last_moves = new_moves
         x, y, theta = tuple(lstsq(MACANUM_MAT, delta_moves)[0])
-        x_odom = cos(now_theta) * x - sin(now_theta) * y
-        y_odom = sin(now_theta) * x + cos(now_theta) * y
+        x_odom = cos(self.now_theta) * x - sin(self.now_theta) * y
+        y_odom = sin(self.now_theta) * x + cos(self.now_theta) * y
         self.now_x += x_odom
         self.now_y += y_odom
         self.now_theta += theta
-        odom_post(now_x, now_y, now_theta)
+        self.odom_post(self.now_x, self.now_y, self.now_theta)
 
 
-    def odom_post(now_x, now_y, now_theta):
+    def odom_post(self, now_x, now_y, now_theta):
         odom_broadcaster = tf.TransformBroadcaster()   
         current_time = rospy.Time.now()
         odom_quat =  tf.transformations.quaternion_from_euler(0,0,now_theta)      
@@ -174,8 +172,8 @@ class ChassisControlNode:
 
 
 def init():
-    chassis_control_node = ChassisControlNode()
     rospy.init_node('com_zynq', anonymous=False)
+    chassis_control_node = ChassisControlNode()
     rospy.Subscriber('cmd_vel', Twist, chassis_control_node.vel_callback)
     rospy.loginfo('go!')
     t = Thread(target=chassis_control_node.run)

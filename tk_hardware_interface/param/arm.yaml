@@ -3,12 +3,24 @@ arm_info:
     name: base
     type: Pulse
     dev_filename: /dev/uio4
-    gpio_filename: /sys/class/gpio/gpio65/value
+    gpio_filename: /sys/class/gpio/gpio64/value
     to_meter_fraction: 246575.3
-    speed: 10000.0
+    speed: 10000
 
-  shoulder_joint:
-    name: shoulder_joint
+  shoulder_rotation_joint:
+    name: shoulder_rotation_joint
+    type: PWM
+    dev_filename: /dev/uio5
+    gpio_filename: /sys/class/gpio/gpio64/value
+    duty_rates: [0.0777, 0.076, 0.074, 0.072, 0.070, 0.068, 0.066, 
+                0.064, 0.062, 0.060, 0.058, 0.0576]
+    angles: [-1.64060950, -1.413716694, -1.22173048, -1.02974425,
+            -0.82030475, -0.61086524, -0.38397244, -0.17453293,
+            0.03490659, 0.26179938, 0.43633231, 0.55850536]
+    start_angle: -1.64060950 
+
+  shoulder_flexion_joint:
+    name: shoulder_flexion_joint
     type: PWM
     dev_filename: /dev/uio6
     gpio_filename: /sys/class/gpio/gpio64/value

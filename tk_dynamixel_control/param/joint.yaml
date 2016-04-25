@@ -1,0 +1,38 @@
+wrist_extension_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: wrist_extension
+    joint_speed: 0.2
+    motor:
+        id: 4
+        init: 0
+        min: 0
+        max: 4095
+
+wrist_deviation_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: wrist_deviation
+    joint_speed: 0.5
+    motor:
+        id: 1
+        init: 0
+        min: 0
+        max: 4095
+
+claw_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: claw
+    joint_speed: 0.5
+    motor:
+        id: 2
+        init: 0 
+        min: 0
+        max: 4095
