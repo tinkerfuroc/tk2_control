@@ -1,0 +1,29 @@
+from numpy import array
+from math import pi
+
+DIV_PER_MOVE = 83460
+DIV_PER_ANGLE = 83460
+
+# x, y, z coefficients from meter/rad to driver move
+X_COF = 1/1.39
+Y_COF = 1/1.32
+THETA_COF = 1.14/pi
+
+MACANUM_MAT = array([
+    [X_COF * -DIV_PER_MOVE, Y_COF * DIV_PER_MOVE, THETA_COF * DIV_PER_ANGLE], #1
+    [X_COF * -DIV_PER_MOVE, -Y_COF * DIV_PER_MOVE, -THETA_COF * DIV_PER_ANGLE], #2
+    [X_COF * DIV_PER_MOVE, Y_COF * DIV_PER_MOVE, -THETA_COF * DIV_PER_ANGLE], #3
+    [X_COF * DIV_PER_MOVE, -Y_COF * DIV_PER_MOVE, THETA_COF * DIV_PER_ANGLE], #4
+    ])
+
+PV_RATE = array([1.0, 1.0, 1.0, 1.0]) * 1.0
+
+MAX_VELOCITY = 0.2
+MAX_A_VELOCITY = 0.6
+MAX_DELTA_VELOCITY = 500
+DEFAULT_VELOCITY = 2000
+
+RATE = 40.0
+
+WAIT_TIME = 0.05
+
