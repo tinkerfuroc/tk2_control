@@ -12,6 +12,7 @@ from numpy.linalg import lstsq, norm
 from constants_odom import *
 from math import cos, sin, fabs
 from chassis import Chassis
+import numpy as np
 
 import actionlib
 from tk_hardware_interface.msg._SimpleMoveFeedback import SimpleMoveFeedback
@@ -44,16 +45,21 @@ class ChassisControlNode:
         self._simple_move_feedback.moved_distance.theta = 0
         with self.lock:
             self.in_action_service = True
-            original_moves = self.chassis.get_feedback()
+            original_moves = array(self.chassis.get_feedback(), dtype=np.float64)
             self.chassis.stop()
             target = goal.target
             distance = array([target.x, target.y, target.theta])
             wheel_moves = MACANUM_MAT.dot(distance.T)
             total_distance = norm(wheel_moves)
+            if total_distance < MAX_DELTA_VELOCITY:
+                self._simple_move_result.success = True
+                self._as.set_succeeded(self._simple_move_result)
+                return
             moved_distance = 0
             vels = wheel_moves / total_distance
-            self.chassis.set_wheels_speed(vels * MAX_DELTA_VELOCITY)
-            self.chassis.set_wheels_count(wheel_moves)
+            self.chassis.set_wheels_speed(vels * MAX_DELTA_VELOCITY * 4)
+            real_moves = array([abs(v) for v in wheel_moves])
+            self.chassis.set_wheels_count(real_moves)
         success = True
         while True:
             if self._as.is_preempt_requested():
@@ -64,17 +70,17 @@ class ChassisControlNode:
                 success = False
                 break
             with self.lock:
-                now_moves = self.chassis.get_feedback()
+                now_moves = array(self.chassis.get_feedback(), dtype=np.float64)
             moved_distance = norm(now_moves - original_moves)
             now_speed = self.get_speed(moved_distance, total_distance)
             wheel_vels = now_speed * vels
-            x, y, theta = tuple(lstsq(MACANUM_MAT, moved_distance)[0])
+            x, y, theta = tuple(lstsq(MACANUM_MAT, now_moves - original_moves)[0])
             self._simple_move_feedback.moved_distance.x += x
             self._simple_move_feedback.moved_distance.y += y
             self._simple_move_feedback.moved_distance.theta += theta
             self._as.publish_feedback(self._simple_move_feedback)
             with self.lock:
-                self.chassis.set_wheels_speed(wheel_vels)
+                self.chassis.set_wheels_speed(wheel_vels * 4)
             if (fabs(moved_distance - total_distance) < 10):
                 break
             rate.sleep()
@@ -91,7 +97,7 @@ class ChassisControlNode:
         remain_distance = total_distance - moved_distance
         if remain_distance < moved_distance:
             moved_distance = remain_distance
-        factor = (moved_distance / remain_distance) / 0.2
+        factor = (moved_distance / total_distance) / 0.2
         if factor > 1:
             factor = 1
         speed = factor * DEFAULT_VELOCITY
