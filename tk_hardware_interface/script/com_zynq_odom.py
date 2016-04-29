@@ -15,9 +15,9 @@ from chassis import Chassis
 import numpy as np
 
 import actionlib
-from tk_hardware_interface.msg._SimpleMoveFeedback import SimpleMoveFeedback
-from tk_hardware_interface.msg._SimpleMoveResult import SimpleMoveResult
-from tk_hardware_interface.msg._SimpleMoveAction import SimpleMoveAction
+from tinker_msgs.msg._SimpleMoveFeedback import SimpleMoveFeedback
+from tinker_msgs.msg._SimpleMoveResult import SimpleMoveResult
+from tinker_msgs.msg._SimpleMoveAction import SimpleMoveAction
 
 
 class ChassisControlNode:
