@@ -1,8 +1,10 @@
 <launch>
+    <include file="$(find tinker_machine)/tinker.machine"/>
+
     <rosparam command="load" file="$(find tk_hardware_interface)/param/controller.yaml"/>
-    <node name="tk_arm_hardware_node" pkg="tk_hardware_interface" type="tk_arm_hardware_node" respawn="false" output="screen">
+    <node machine="zynq" name="tk_arm_hardware_node" pkg="tk_hardware_interface" type="tk_arm_hardware_node" respawn="false" output="screen">
         <rosparam command="load" file="$(find tk_hardware_interface)/param/arm.yaml"/>
     </node>
-    <node name="control_spawn" pkg="controller_manager" type="spawner" output="screen"
+    <node machine="zynq" name="control_spawn" pkg="controller_manager" type="spawner" output="screen"
           args="arm_joint_state_controller base_joint_position_controller shoulder_rotation_joint_position_controller shoulder_flexion_joint_position_controller elbow_joint_position_controller" />
 </launch>

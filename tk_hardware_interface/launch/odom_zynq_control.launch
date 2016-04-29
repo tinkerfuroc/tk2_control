@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find tinker_machine)/tinker.machine"/>
+
+    <node machine="zynq" name="odom_zynq" pkg="tk_hardware_interface" type="com_zynq_odom.py"/>
+</launch>
