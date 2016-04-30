@@ -75,9 +75,9 @@ class ChassisControlNode:
             now_speed = self.get_speed(moved_distance, total_distance)
             wheel_vels = now_speed * vels
             x, y, theta = tuple(lstsq(MACANUM_MAT, now_moves - original_moves)[0])
-            self._simple_move_feedback.moved_distance.x += x
-            self._simple_move_feedback.moved_distance.y += y
-            self._simple_move_feedback.moved_distance.theta += theta
+            self._simple_move_feedback.moved_distance.x = x
+            self._simple_move_feedback.moved_distance.y = y
+            self._simple_move_feedback.moved_distance.theta = theta
             self._as.publish_feedback(self._simple_move_feedback)
             with self.lock:
                 self.chassis.set_wheels_speed(wheel_vels * 4)
