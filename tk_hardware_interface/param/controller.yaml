@@ -9,7 +9,7 @@ arm_joint_state_controller:
 
 base_joint_position_controller:
   type: 'position_controllers/JointPositionController'
-  joint: arm_origin_joint
+  joint: arm_base_joint
     
 elbow_joint_position_controller:
   type: 'position_controllers/JointPositionController'
