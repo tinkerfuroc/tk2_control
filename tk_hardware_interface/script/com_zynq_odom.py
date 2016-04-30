@@ -84,9 +84,12 @@ class ChassisControlNode:
             if (fabs(moved_distance - total_distance) < 10):
                 break
             rate.sleep()
+        self._simple_move_result.success = success
+        self._simple_move_result.moved_distance = self._simple_move_feedback.moved_distance
         if success:
-            self._simple_move_result.success = True
             self._as.set_succeeded(self._simple_move_result)
+        else:
+            self._as.set_aborted(self._simple_move_result)
         with self.lock:
             self.in_action_service = False
 
