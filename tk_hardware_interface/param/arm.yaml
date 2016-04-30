@@ -1,6 +1,6 @@
 arm_info:
-  base:
-    name: base
+  arm_base_joint:
+    name: arm_base_joint
     type: Pulse
     dev_filename: /dev/uio4
     gpio_filename: /sys/class/gpio/gpio64/value
