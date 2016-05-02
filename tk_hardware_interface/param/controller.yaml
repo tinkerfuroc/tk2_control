@@ -1,14 +1,15 @@
 arm_joint_state_controller:
   type: 'joint_state_controller/JointStateController'
   joints:
-    - base
+    - arm_base_joint
     - elbow_joint
-    - shoulder_joint
+    - shoulder_rotation_joint
+    - shoulder_flexion_joint
   publish_rate: 10.0
 
 base_joint_position_controller:
   type: 'position_controllers/JointPositionController'
-  joint: base
+  joint: arm_base_joint
     
 elbow_joint_position_controller:
   type: 'position_controllers/JointPositionController'
