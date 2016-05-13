@@ -5,7 +5,7 @@ arm_info:
     dev_filename: /dev/uio4
     gpio_filename: /sys/class/gpio/gpio64/value
     to_meter_fraction: 246575.3
-    speed: 10000
+    speed: 5000
 
   shoulder_rotation_joint:
     name: shoulder_rotation_joint
@@ -14,9 +14,9 @@ arm_info:
     gpio_filename: /sys/class/gpio/gpio64/value
     duty_rates: [0.08, 0.078, 0.076, 0.074, 0.072, 0.070, 0.068, 
                 0.066, 0.064, 0.062, 0.060, 0.058]
-    angles: [-1.67551608, -1.3962634 , -1.20427718, -0.99483767, -0.80285146,
-             -0.61086524, -0.38397244, -0.15707963,  0.05235988,  0.27925268,
-             0.48869219,  0.6981317 ]
+    angles: [-1.71042267, -1.43116999, -1.20427718, -1.01229097, -0.82030475,
+             -0.62831853, -0.41887902, -0.19198622,  0.01745329,  0.2443461 ,
+             0.45378561,  0.66322512]
     start_angle: -1.64060950 
 
   shoulder_flexion_joint:
