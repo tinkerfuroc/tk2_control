@@ -64,11 +64,13 @@ class ChassisControlNode:
         while True:
             if self._as.is_preempt_requested():
                 rospy.loginfo('%s: Preempted' % self._action_name)
-                self._as.set_preempted()
+                self._simple_move_result.success = False
+                self._simple_move_result.moved_distance = self._simple_move_feedback.moved_distance
+                self._as.set_preempted(self._simple_move_result)
                 with self.lock:
                     self.chassis.stop()
-                success = False
-                break
+                    self.in_action_service = False
+                return
             with self.lock:
                 now_moves = array(self.chassis.get_feedback(), dtype=np.float64)
             moved_distance = norm(now_moves - original_moves)
