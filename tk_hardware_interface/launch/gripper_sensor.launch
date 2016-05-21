@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find tinker_machine)/tinker.machine"/>
+    <node machine="zynq" name="gripper_sensor" pkg="tk_hardware_interface" type="gripper_sensor.py">
+        <param name="gripper_laser_pin" value="58" type="int"/>
+    </node>
+</launch>
