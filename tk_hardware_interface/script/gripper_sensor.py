@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import rospy
-from termcolor import colored
 from std_msgs.msg import Bool
 
 
@@ -12,7 +11,7 @@ def main():
     try:
         gpiopin = "gpio%s" % (str(sensor_pin),)
         pin = open("/sys/class/gpio/" + gpiopin + "/value", "r")
-        rospy.loginfo(colored('Starting gripper laser sensor ...', 'green'))
+        rospy.loginfo('Starting gripper laser sensor ...')
     except:
         rospy.logerr('Cannot open sensor pin')
         return
@@ -20,6 +19,7 @@ def main():
     old_value = int(pin.read().strip())
     publisher.publish(old_value)
     while not rospy.is_shutdown():
+        pin.seek(0)
         value = int(pin.read().strip())
         if value != old_value:
             publisher.publish(value)

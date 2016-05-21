@@ -19,6 +19,7 @@ SwitchGPIO::SwitchGPIO(const std::string& gpio_file_name) : gpio_fd_(-1) {
 }
 
 bool SwitchGPIO::Get() {
+    return 0;
     if(gpio_fd_ < 0) return 1;
     char c;
     if (read(gpio_fd_, &c, 1) != 1) {
