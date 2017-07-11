@@ -3,7 +3,7 @@ arm_joint_state_controller:
   joints:
     - arm_base_joint
     - elbow_joint
-    - shoulder_rotation_joint
+    # - shoulder_rotation_joint
     - shoulder_flexion_joint
   publish_rate: 10.0
 

@@ -2,19 +2,12 @@
     <include file="$(find tinker_machine)/tinker.machine"/>
 
     <rosparam file="$(find tk_dynamixel_control)/param/joint.yaml" command="load"/>
-    <node machine="zynq" name="controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
+    <node name="controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
         args="--manager=dxl_manager
             --port pan_tilt_port
-            wrist_extension_controller
-            wrist_deviation_controller claw_controller"
-        output="screen"/>
-    <rosparam file="$(find tk_dynamixel_control)/joints_controller.yaml" command="load"/>
-    <node machine="zynq" name="controller_spawner_meta" pkg="dynamixel_controllers" type="controller_spawner.py"
-        args="--manager=dxl_manager
-              --type=meta
-              f_arm_controller
-              wrist_extension_controller
-              wrist_deviation_controller
-              claw_controller"
+            wrist_roll_controller
+            wrist_deviation_controller
+            claw_torque_controller 
+            "
         output="screen"/>
 </launch>

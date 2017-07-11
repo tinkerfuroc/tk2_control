@@ -1,13 +1,14 @@
 <launch>
     <include file="$(find tinker_machine)/tinker.machine"/>
-    <node machine="zynq" name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">
+    <!--knode machine="zynq" name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen"-->
+    <node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">
         <rosparam>
             namespace: dxl_manager
             serial_ports:
                 pan_tilt_port:
-                    port_name: "/dev/ttyUL2"
+                    port_name: "/dev/ttyUSB0"
                     baud_rate: 115200
-                    min_motor_id: 0
+                    min_motor_id: 1
                     max_motor_id: 25
                     update_rate: 20
         </rosparam>
