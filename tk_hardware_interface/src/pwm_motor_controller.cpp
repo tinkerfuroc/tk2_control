@@ -19,20 +19,31 @@ using std::vector;
 PWMMotorController::PWMMotorController(
     XmlRpc::XmlRpcValue &pwm_motor_info)
     : motor_regs_(NULL), now_angle_(0), commanded_(false){
+    ROS_INFO("0pwm_motor_info get param pass");
     ROS_ASSERT(pwm_motor_info.getType() == XmlRpc::XmlRpcValue::TypeStruct);
     ROS_ASSERT(pwm_motor_info.hasMember("name"));
+    ROS_INFO("1pwm_motor_info get param pass");
     ROS_ASSERT(pwm_motor_info.hasMember("dev_filename"));
+    ROS_INFO("2pwm_motor_info get param pass");
     ROS_ASSERT(pwm_motor_info.hasMember("gpio_filename"));
+    ROS_INFO("3pwm_motor_info get param pass");
     ROS_ASSERT(pwm_motor_info.hasMember("angles"));
+    ROS_INFO("4pwm_motor_info get param pass");
     ROS_ASSERT(pwm_motor_info.hasMember("duty_rates"));
+    ROS_INFO("5pwm_motor_info get param pass");
     ROS_ASSERT(pwm_motor_info.hasMember("start_angle"));
+    ROS_INFO("6pwm_motor_info get param pass");
 
     // Open device files
     name_ = (string)pwm_motor_info["name"];
+    ROS_INFO("7pwm_motor_info get param pass");
     string dev_file = pwm_motor_info["dev_filename"];
+    ROS_INFO("8pwm_motor_info get param pass");
     legal_checker_ =
         SwitchGPIOPtr(new SwitchGPIO(pwm_motor_info["gpio_filename"]));
+    ROS_INFO("9pwm_motor_info get param pass");
     dev_fd_ = open(dev_file.c_str(), O_RDWR, 0);
+    ROS_INFO("10pwm_motor_info get param pass");
     if (dev_fd_ < 0) {
         ROS_ERROR("Failed to open file %s for motor %s", dev_file.c_str(),
                   name_.c_str());

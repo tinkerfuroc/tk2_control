@@ -47,17 +47,23 @@ PulseMotorController::PulseMotorController(
     }
 
     // Check initial position
+    printf("fuck 1\n");
     ROS_INFO("Motor %s suceessfully mapped file %s", name_.c_str(),
              dev_file.c_str());
     can_move_ = !legal_checker_->Get();
+    printf("fuck 2\n");
 
     // Setup
     to_meter_fraction_ = pulse_motor_info["to_meter_fraction"];
+    printf("fuck 3\n");
+    ROS_INFO("get to_meter_fraction");
     if (!can_move_) ROS_WARN("Motor %s not at initial position", name_.c_str());
     speed_ = (unsigned)((int)pulse_motor_info["speed"]);
+    printf("fuck 4\n");
     motor_regs_[kCTRL] = CTRL_DIR & ~CTRL_ENABLE;
     motor_regs_[kVEL] = speed_;
     start_count_ = motor_regs_[kFEEDBACK];
+    printf("fuck 5\n");
     ROS_INFO("Pulse motor %s starts with count %u", name_.c_str(), start_count_);
 }
 

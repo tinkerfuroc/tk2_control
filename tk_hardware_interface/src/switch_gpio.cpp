@@ -13,9 +13,9 @@ namespace tinker {
 namespace control {
 
 SwitchGPIO::SwitchGPIO(const std::string& gpio_file_name) : gpio_fd_(-1) {
-    gpio_fd_ = open(gpio_file_name.c_str(), O_RDWR, 0);
-    if (gpio_fd_ < 0) 
-        ROS_ERROR("failed to open gpio file %s", gpio_file_name.c_str());
+    //gpio_fd_ = open(gpio_file_name.c_str(), O_RDWR, 0);
+    //if (gpio_fd_ < 0) 
+    //    ROS_ERROR("failed to open gpio file %s", gpio_file_name.c_str());
 }
 
 bool SwitchGPIO::Get() {
